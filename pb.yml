@@ -1,0 +1,82 @@
+---
+- hosts: 127.0.0.1
+  become: yes
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install PHP module for Apache
+      apt:
+        name: libapache2-mod-php8.0
+        state: present
+
+    - name: Install Hello World
+      copy:
+        src: apache/index.php
+        dest: /var/www/html/index.php
+        mode: 0644
+
+    - name: Install python MySql package
+      pip:
+        name: pymysql
+        state: present
+
+    - name: 1. Install MySQLServer server package
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Start Apache server
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: 1.1 configurazione server name per localhost
+      lineinfile:
+        path: /etc/apache2/apache2.conf
+        line: ServerName 127.0.0.1
+
+
+    - name: Start MySQL
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+
+    - name: Create MySQL Database
+      mysql_db:
+        name: users
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_host: localhost
+        state: import
+        target: tmp/dump.sql
+        collation: utf8_general_ci  # Corrected collation
+      tags: ['mysql']
+
+    - name: Create MySQL User
+      mysql_user:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: root
+        login_host: localhost
+        name: ansible
+        password: ansible
+        priv: '*.*:ALL'
+        state: present
+
+    - name: Copy sample data
+      copy: src=tmp/dump.sql dest=/tmp/dump.sql
+
+    - name: Install MySQL Extension for PHP
+      apt:
+        name: php-mysql  # Use the correct package name
+        state: present
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted

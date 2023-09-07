@@ -1,0 +1,20 @@
+use users;
+
+CREATE TABLE IF NOT EXISTS users (
+  id varchar(255) NOT NULL PRIMARY KEY,
+  username varchar(255) NOT NULL,
+  email varchar(255) NOT NULL
+);
+
+
+INSERT IGNORE INTO users (id, username, email) VALUES('1', 'agostino', 'agostino@gmail.com');
+
+   INSERT IGNORE INTO users (id, username, email) VALUES('2', 'pietro', 'pietro@partner.bip.com');
+
+   INSERT IGNORE INTO users (id, username, email) VALUES('3', 'emmanuele', 'emmanuele@uniroma1.it');
+
+   INSERT IGNORE INTO users (id, username, email) VALUES('4', 'leyla', 'layla@gmail.com');
+
+   INSERT IGNORE INTO users (id, username, email) VALUES('5', 'zarmina', 'zarmina@gmail.com');
+
+   INSERT IGNORE INTO users (id, username, email) VALUES('6', 'giuseppi', 'gabriele@giuseppe.com');
