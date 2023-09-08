@@ -68,9 +68,6 @@
         priv: '*.*:ALL'
         state: present
 
-    - name: Copy sample data
-      copy: src=tmp/dump.sql dest=/tmp/dump.sql
-
     - name: Install MySQL Extension for PHP
       apt:
         name: php-mysql  # Use the correct package name
