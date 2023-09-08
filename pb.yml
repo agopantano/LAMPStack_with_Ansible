@@ -18,12 +18,12 @@
         dest: /var/www/html/index.php
         mode: 0644
 
-    - name: Install python MySql package
+    - name: Install python MySQL package
       pip:
         name: pymysql
         state: present
 
-    - name: 1. Install MySQLServer server package
+    - name: Install MySQLServer server package
       apt:
         name: mysql-server
         state: present
@@ -34,7 +34,7 @@
         state: started
         enabled: yes
 
-    - name: 1.1 configurazione server name per localhost
+    - name: Server name
       lineinfile:
         path: /etc/apache2/apache2.conf
         line: ServerName 127.0.0.1
